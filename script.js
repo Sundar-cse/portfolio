@@ -46,7 +46,7 @@ const portfolioData = {
 
     /* =========================================
        CERTIFICATIONS
-       Add your certificate image files inside:
+       Add certificate image files inside:
        assets/certificates/
 
        Example:
@@ -131,13 +131,15 @@ portfolioData.projects.forEach((project, index) => {
     projectsContainer.appendChild(projectElement);
 });
 
-/* CERTIFICATIONS - CASCADING IMAGE VIEWER */
+/* =========================================
+   CERTIFICATIONS - HORIZONTAL CAROUSEL
+========================================= */
 const certificationsContainer = document.getElementById("certificationsContainer");
+let currentCertificate = 0;
 
 portfolioData.certifications.forEach((cert, index) => {
     const certElement = document.createElement("article");
     certElement.className = "cert-card glass";
-    certElement.style.setProperty("--cert-offset", (index % 2 === 0 ? index * 3 : index * -3));
 
     certElement.innerHTML = `
         <div class="cert-image-wrap" role="button" tabindex="0" aria-label="Open ${cert.title}">
@@ -166,6 +168,54 @@ portfolioData.certifications.forEach((cert, index) => {
 
     certificationsContainer.appendChild(certElement);
 });
+
+/* CAROUSEL CONTROLS */
+const controls = document.createElement("div");
+controls.className = "cert-controls";
+controls.innerHTML = `
+    <button class="cert-nav" id="certPrev" aria-label="Previous certificate">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <span class="cert-counter" id="certCounter">1 / ${portfolioData.certifications.length}</span>
+    <button class="cert-nav" id="certNext" aria-label="Next certificate">
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>`;
+certificationsContainer.parentElement.appendChild(controls);
+
+const dots = document.createElement("div");
+dots.className = "cert-dots";
+portfolioData.certifications.forEach((_, index) => {
+    const dot = document.createElement("button");
+    dot.className = "cert-dot";
+    dot.setAttribute("aria-label", `Go to certificate ${index + 1}`);
+    dot.addEventListener("click", () => showCertificate(index));
+    dots.appendChild(dot);
+});
+certificationsContainer.parentElement.appendChild(dots);
+
+const certCards = [...certificationsContainer.querySelectorAll(".cert-card")];
+const certCounter = document.getElementById("certCounter");
+const certDots = [...dots.querySelectorAll(".cert-dot")];
+
+function showCertificate(index) {
+    if (!certCards.length) return;
+    currentCertificate = (index + certCards.length) % certCards.length;
+
+    certCards.forEach((card, i) => {
+        card.classList.remove("active", "prev", "next");
+        if (i === currentCertificate) card.classList.add("active");
+        else if (i === (currentCertificate - 1 + certCards.length) % certCards.length) card.classList.add("prev");
+        else if (i === (currentCertificate + 1) % certCards.length) card.classList.add("next");
+    });
+
+    certCounter.textContent = `${currentCertificate + 1} / ${certCards.length}`;
+    certDots.forEach((dot, i) => dot.classList.toggle("active", i === currentCertificate));
+}
+
+document.getElementById("certPrev").addEventListener("click", () => showCertificate(currentCertificate - 1));
+document.getElementById("certNext").addEventListener("click", () => showCertificate(currentCertificate + 1));
+
+showCertificate(0);
 
 /* FULL-SCREEN CERTIFICATE MODAL */
 const certModal = document.createElement("div");
@@ -201,6 +251,8 @@ certModal.addEventListener("click", event => {
 });
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") closeCertificate();
+    if (event.key === "ArrowLeft") showCertificate(currentCertificate - 1);
+    if (event.key === "ArrowRight") showCertificate(currentCertificate + 1);
 });
 
 /* EDUCATION */
