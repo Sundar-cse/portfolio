@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Portfolio</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background decorations -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass">
+        <div class="logo" id="navName">Your Name</div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#certifications">Certifications</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <button class="menu-btn" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <div class="status">
+                <span class="status-dot"></span>
+                Available for opportunities
+            </div>
+
+            <p class="hello">Hello, I'm</p>
+
+            <h1 id="heroName">Sundar</h1>
+
+            <h2 id="heroRole">Computer Science Student</h2>
+
+            <p id="heroBio" class="hero-description">
+                I’m a student interested in technology,
+                web development and building creative digital experiences.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#projects" class="btn primary">
+                    View My Work
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a href="#contact" class="btn secondary">
+                    Contact Me
+                </a>
+            </div>
+
+            <div class="socials">
+                <a id="githubLink" href="#" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+
+                <a id="linkedinLink" href="#" target="_blank">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+
+                <a id="emailLink" href="#">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="hero-card glass">
+
+            <div class="profile-circle">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+
+            <h3 id="cardName">Sundar</h3>
+
+            <p id="cardCourse">
+                B.E Computer Science
+            </p>
+
+            <div class="mini-stats">
+
+                <div>
+                    <strong id="projectCount">0</strong>
+                    <span>Projects</span>
+                </div>
+
+                <div>
+                    <strong id="certCount">0</strong>
+                    <span>Certificates</span>
+                </div>
+
+                <div>
+                    <strong id="skillCount">0</strong>
+                    <span>Skills</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About -->
+    <section id="about" class="section">
+
+        <div class="section-title">
+            <span>01</span>
+            <h2>About Me</h2>
+        </div>
+
+        <div class="about-grid">
+
+            <div class="glass about-card">
+                <i class="fa-solid fa-code icon"></i>
+
+                <h3>Who I Am</h3>
+
+                <p id="aboutText">
+                    I am a motivated student who enjoys learning new
+                    technologies and turning ideas into useful projects.
+                </p>
+            </div>
+
+            <div class="glass about-card">
+                <i class="fa-solid fa-lightbulb icon"></i>
+
+                <h3>My Goal</h3>
+
+                <p>
+                    My goal is to continuously improve my technical skills,
+                    work on meaningful projects and begin my professional
+                    journey in the technology industry.
+                </p>
+            </div>
+
+            <div class="glass about-card">
+                <i class="fa-solid fa-rocket icon"></i>
+
+                <h3>What I Do</h3>
+
+                <p>
+                    Web development, programming, UI design,
+                    problem solving and exploring emerging technologies.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+
+        <div class="section-title">
+            <span>02</span>
+            <h2>My Skills</h2>
+        </div>
+
+        <div id="skillsContainer" class="skills-grid"></div>
+
+    </section>
+
+
+    <!-- Projects -->
+    <section id="projects" class="section">
+
+        <div class="section-title">
+            <span>03</span>
+            <h2>Featured Projects</h2>
+        </div>
+
+        <div id="projectsContainer" class="projects-grid"></div>
+
+    </section>
+
+
+    <!-- Certifications -->
+    <section id="certifications" class="section">
+
+        <div class="section-title">
+            <span>04</span>
+            <h2>Certifications</h2>
+        </div>
+
+        <div id="certificationsContainer" class="certifications-grid"></div>
+
+    </section>
+
+
+    <!-- Education -->
+    <section id="education" class="section">
+
+        <div class="section-title">
+            <span>05</span>
+            <h2>Education</h2>
+        </div>
+
+        <div id="educationContainer" class="timeline"></div>
+
+    </section>
+
+
+    <!-- Contact -->
+    <section id="contact" class="section contact-section">
+
+        <div class="glass contact-card">
+
+            <div class="section-title">
+                <span>06</span>
+                <h2>Let's Connect</h2>
+            </div>
+
+            <p>
+                Interested in working together or just want to say hello?
+                Feel free to reach out.
+            </p>
+
+            <a id="contactEmail" href="#" class="btn primary">
+                <i class="fa-solid fa-paper-plane"></i>
+                Send Me an Email
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            © <span id="year"></span>
+            <span id="footerName">Sundar</span>.
+            Built with passion & code.
+        </p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
