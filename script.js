@@ -45,10 +45,30 @@ const portfolioData = {
     ],
 
     /* =========================================
-       CERTIFICATIONS
-       Certificates are loaded automatically from:
-       assets/certificates/
+       CERTIFICATE DETAILS - EDIT ONLY THIS PART
+       The filename must match the image in assets/certificates/
     ========================================= */
+    certificateDetails: {
+        "certificate-01.jpg": {
+            title: "Your Certificate Name",
+            description: "Add your certificate description here.",
+            organization: "Certificate",
+            year: ""
+        },
+        "certificate-02.png": {
+            title: "Your Certificate Name",
+            description: "Add your certificate description here.",
+            organization: "Certificate",
+            year: ""
+        },
+        "certificate-03.jpg": {
+            title: "Your Certificate Name",
+            description: "Add your certificate description here.",
+            organization: "Certificate",
+            year: ""
+        }
+    },
+
     certifications: [],
 
     education: [
@@ -139,12 +159,16 @@ async function loadCertificates() {
             .filter(file => file.type === "file" && /\.(jpe?g|png|webp|gif)$/i.test(file.name))
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 
-        portfolioData.certifications = imageFiles.map(file => ({
-            title: certificateTitle(file.name),
-            organization: "Certificate",
-            year: "",
-            image: `${file.download_url}?v=${file.sha}`
-        }));
+        portfolioData.certifications = imageFiles.map(file => {
+            const details = portfolioData.certificateDetails[file.name] || {};
+            return {
+                title: details.title || certificateTitle(file.name),
+                description: details.description || "",
+                organization: details.organization || "Certificate",
+                year: details.year || "",
+                image: `${file.download_url}?v=${file.sha}`
+            };
+        });
 
         renderCertificates();
         document.getElementById("certCount").textContent = portfolioData.certifications.length;
@@ -177,7 +201,8 @@ function renderCertificates() {
             <div class="cert-info">
                 <div>
                     <h3>${cert.title}</h3>
-                    <p>${cert.organization}</p>
+                    ${cert.description ? `<p>${cert.description}</p>` : ""}
+                    ${cert.organization ? `<p class="cert-organization">${cert.organization}</p>` : ""}
                 </div>
                 ${cert.year ? `<span class="cert-year">${cert.year}</span>` : ""}
             </div>`;
