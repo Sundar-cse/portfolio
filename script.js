@@ -46,32 +46,10 @@ const portfolioData = {
 
     /* =========================================
        CERTIFICATIONS
-       Add certificate image files inside:
+       Certificates are loaded automatically from:
        assets/certificates/
-
-       Example:
-       image: "assets/certificates/python.jpg"
     ========================================= */
-    certifications: [
-        {
-            title: "Python for Everybody",
-            organization: "Coursera",
-            year: "2026",
-            image: "assets/certificates/certificate-01.jpg"
-        },
-        {
-            title: "Web Development Fundamentals",
-            organization: "freeCodeCamp",
-            year: "2026",
-            image: "assets/certificates/certificate-02.jpg"
-        },
-        {
-            title: "JavaScript Algorithms and Data Structures",
-            organization: "freeCodeCamp",
-            year: "2026",
-            image: "assets/certificates/certificate-03.jpg"
-        }
-    ],
+    certifications: [],
 
     education: [
         {
@@ -132,70 +110,129 @@ portfolioData.projects.forEach((project, index) => {
 });
 
 /* =========================================
-   CERTIFICATIONS - HORIZONTAL CAROUSEL
+   CERTIFICATIONS - AUTOMATIC HORIZONTAL CAROUSEL
+   Any JPG, JPEG, PNG, WEBP or GIF added to
+   assets/certificates/ will appear automatically.
 ========================================= */
 const certificationsContainer = document.getElementById("certificationsContainer");
 let currentCertificate = 0;
+let certCards = [];
+let certCounter = null;
+let certDots = [];
 
-portfolioData.certifications.forEach((cert, index) => {
-    const certElement = document.createElement("article");
-    certElement.className = "cert-card glass";
+function certificateTitle(filename) {
+    return filename
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
 
-    certElement.innerHTML = `
-        <div class="cert-image-wrap" role="button" tabindex="0" aria-label="Open ${cert.title}">
-            <img class="cert-image" src="${cert.image}" alt="${cert.title} certificate from ${cert.organization}" loading="lazy">
-            <div class="cert-image-overlay">
-                <span class="cert-badge">CERTIFICATE ${String(index + 1).padStart(2, "0")}</span>
-                <span class="cert-zoom"><i class="fa-solid fa-expand"></i></span>
+async function loadCertificates() {
+    const apiUrl = "https://api.github.com/repos/Sundar-cse/portfolio/contents/assets/certificates?ref=main";
+
+    try {
+        const response = await fetch(apiUrl, { cache: "no-store" });
+        if (!response.ok) throw new Error("Could not load certificates");
+
+        const files = await response.json();
+        const imageFiles = files
+            .filter(file => file.type === "file" && /\.(jpe?g|png|webp|gif)$/i.test(file.name))
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+
+        portfolioData.certifications = imageFiles.map(file => ({
+            title: certificateTitle(file.name),
+            organization: "Certificate",
+            year: "",
+            image: `${file.download_url}?v=${file.sha}`
+        }));
+
+        renderCertificates();
+        document.getElementById("certCount").textContent = portfolioData.certifications.length;
+    } catch (error) {
+        certificationsContainer.innerHTML = `
+            <div class="cert-loading">
+                <p>Unable to load certificates right now.</p>
+            </div>`;
+        document.getElementById("certCount").textContent = "0";
+        console.error(error);
+    }
+}
+
+function renderCertificates() {
+    certificationsContainer.innerHTML = "";
+    currentCertificate = 0;
+
+    portfolioData.certifications.forEach((cert, index) => {
+        const certElement = document.createElement("article");
+        certElement.className = "cert-card glass";
+
+        certElement.innerHTML = `
+            <div class="cert-image-wrap" role="button" tabindex="0" aria-label="Open ${cert.title}">
+                <img class="cert-image" src="${cert.image}" alt="${cert.title} certificate" loading="lazy">
+                <div class="cert-image-overlay">
+                    <span class="cert-badge">CERTIFICATE ${String(index + 1).padStart(2, "0")}</span>
+                    <span class="cert-zoom"><i class="fa-solid fa-expand"></i></span>
+                </div>
             </div>
-        </div>
-        <div class="cert-info">
-            <div>
-                <h3>${cert.title}</h3>
-                <p>${cert.organization}</p>
-            </div>
-            <span class="cert-year">${cert.year}</span>
-        </div>`;
+            <div class="cert-info">
+                <div>
+                    <h3>${cert.title}</h3>
+                    <p>${cert.organization}</p>
+                </div>
+                ${cert.year ? `<span class="cert-year">${cert.year}</span>` : ""}
+            </div>`;
 
-    const imageWrap = certElement.querySelector(".cert-image-wrap");
-    imageWrap.addEventListener("click", () => openCertificate(cert.image, cert.title));
-    imageWrap.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            openCertificate(cert.image, cert.title);
-        }
+        const imageWrap = certElement.querySelector(".cert-image-wrap");
+        imageWrap.addEventListener("click", () => openCertificate(cert.image, cert.title));
+        imageWrap.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openCertificate(cert.image, cert.title);
+            }
+        });
+
+        certificationsContainer.appendChild(certElement);
     });
 
-    certificationsContainer.appendChild(certElement);
-});
+    const oldControls = certificationsContainer.parentElement.querySelector(".cert-controls");
+    const oldDots = certificationsContainer.parentElement.querySelector(".cert-dots");
+    if (oldControls) oldControls.remove();
+    if (oldDots) oldDots.remove();
 
-/* CAROUSEL CONTROLS */
-const controls = document.createElement("div");
-controls.className = "cert-controls";
-controls.innerHTML = `
-    <button class="cert-nav" id="certPrev" aria-label="Previous certificate">
-        <i class="fa-solid fa-arrow-left"></i>
-    </button>
-    <span class="cert-counter" id="certCounter">1 / ${portfolioData.certifications.length}</span>
-    <button class="cert-nav" id="certNext" aria-label="Next certificate">
-        <i class="fa-solid fa-arrow-right"></i>
-    </button>`;
-certificationsContainer.parentElement.appendChild(controls);
+    if (!portfolioData.certifications.length) return;
 
-const dots = document.createElement("div");
-dots.className = "cert-dots";
-portfolioData.certifications.forEach((_, index) => {
-    const dot = document.createElement("button");
-    dot.className = "cert-dot";
-    dot.setAttribute("aria-label", `Go to certificate ${index + 1}`);
-    dot.addEventListener("click", () => showCertificate(index));
-    dots.appendChild(dot);
-});
-certificationsContainer.parentElement.appendChild(dots);
+    const controls = document.createElement("div");
+    controls.className = "cert-controls";
+    controls.innerHTML = `
+        <button class="cert-nav" id="certPrev" aria-label="Previous certificate">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <span class="cert-counter" id="certCounter">1 / ${portfolioData.certifications.length}</span>
+        <button class="cert-nav" id="certNext" aria-label="Next certificate">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>`;
+    certificationsContainer.parentElement.appendChild(controls);
 
-const certCards = [...certificationsContainer.querySelectorAll(".cert-card")];
-const certCounter = document.getElementById("certCounter");
-const certDots = [...dots.querySelectorAll(".cert-dot")];
+    const dots = document.createElement("div");
+    dots.className = "cert-dots";
+    portfolioData.certifications.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = "cert-dot";
+        dot.setAttribute("aria-label", `Go to certificate ${index + 1}`);
+        dot.addEventListener("click", () => showCertificate(index));
+        dots.appendChild(dot);
+    });
+    certificationsContainer.parentElement.appendChild(dots);
+
+    certCards = [...certificationsContainer.querySelectorAll(".cert-card")];
+    certCounter = document.getElementById("certCounter");
+    certDots = [...dots.querySelectorAll(".cert-dot")];
+
+    document.getElementById("certPrev").addEventListener("click", () => showCertificate(currentCertificate - 1));
+    document.getElementById("certNext").addEventListener("click", () => showCertificate(currentCertificate + 1));
+
+    showCertificate(0);
+}
 
 function showCertificate(index) {
     if (!certCards.length) return;
@@ -208,14 +245,9 @@ function showCertificate(index) {
         else if (i === (currentCertificate + 1) % certCards.length) card.classList.add("next");
     });
 
-    certCounter.textContent = `${currentCertificate + 1} / ${certCards.length}`;
+    if (certCounter) certCounter.textContent = `${currentCertificate + 1} / ${certCards.length}`;
     certDots.forEach((dot, i) => dot.classList.toggle("active", i === currentCertificate));
 }
-
-document.getElementById("certPrev").addEventListener("click", () => showCertificate(currentCertificate - 1));
-document.getElementById("certNext").addEventListener("click", () => showCertificate(currentCertificate + 1));
-
-showCertificate(0);
 
 /* FULL-SCREEN CERTIFICATE MODAL */
 const certModal = document.createElement("div");
@@ -270,7 +302,7 @@ portfolioData.education.forEach(education => {
 
 /* STATISTICS */
 document.getElementById("projectCount").textContent = portfolioData.projects.length;
-document.getElementById("certCount").textContent = portfolioData.certifications.length;
+document.getElementById("certCount").textContent = "0";
 document.getElementById("skillCount").textContent = portfolioData.skills.length;
 
 /* CURRENT YEAR */
@@ -286,3 +318,6 @@ document.querySelectorAll(".nav-links a").forEach(link => {
         document.querySelector(".nav-links").classList.remove("active");
     });
 });
+
+/* LOAD CERTIFICATES FROM GITHUB */
+loadCertificates();
