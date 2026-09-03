@@ -9,9 +9,9 @@ const portfolioData = {
     bio: "I’m a good student interested in technology, web development and building creative digital experiences.",
     about: "I am a motivated student who enjoys learning new technologies and turning ideas into useful projects.",
 
-    github: "https://github.com/yourusername",
-    linkedin: "https://www.linkedin.com/in/yourusername/",
-    email: "your.sundarkvp2@example.com",
+    github: "https://github.com/sundar-cse",
+    linkedin: "https://www.linkedin.com/in/sundar-m-6908b0302/",
+    email: "sundarkvp2@gmail.com",
 
     skills: [
         { name: "HTML", icon: "fa-brands fa-html5" },
