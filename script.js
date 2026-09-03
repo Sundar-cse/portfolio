@@ -50,22 +50,22 @@ const portfolioData = {
     ========================================= */
     certificateDetails: {
         "certificate-01.jpg": {
-            title: "Your Certificate Name",
-            description: "Add your certificate description here.",
-            organization: "Certificate",
-            year: ""
+            title: "Cyber security Overview",
+            description: "I learned bascic conceptsof cyber security.",
+            organization: "infoyses springboard",
+            year: "2026"
         },
         "certificate-02.png": {
-            title: "Your Certificate Name",
-            description: "Add your certificate description here.",
-            organization: "Certificate",
-            year: ""
+            title: "Gooogle Ai essentials",
+            description: "it was my first course in ai at the time AI was new thanks to this course i learned and applied ai in my works",
+            organization: "Google",
+            year: "2024"
         },
         "certificate-03.jpg": {
-            title: "Your Certificate Name",
-            description: "Add your certificate description here.",
-            organization: "Certificate",
-            year: ""
+            title: "Foundations of cybersecurity",
+            description: "With historical data and practical concepts this course helped in understanding the need for cybersecurity.",
+            organization: "Google",
+            year: "2024"
         }
     },
 
@@ -73,7 +73,7 @@ const portfolioData = {
 
     education: [
         {
-            degree: "B.Tech Computer Science",
+            degree: "B.E Computer Science",
             school: "T.J.S Engineering colllege",
             year: "2024 - 2028",
             description: "Currently pursuing a degree in Computer Science with an interest in software development and emerging technologies."
