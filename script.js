@@ -12,6 +12,7 @@ const portfolioData = {
     github: "https://github.com/sundar-cse",
     linkedin: "https://www.linkedin.com/in/sundar-m-6908b0302/",
     email: "sundarkvp2@gmail.com",
+   instagram: "destiny_seeker21",
 
     skills: [
         { name: "HTML", icon: "fa-brands fa-html5" },
