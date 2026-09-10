@@ -28,7 +28,7 @@ const portfolioData = {
             title: "Weather Application",
             description: "A responsive weather application that displays current weather information using an API.",
             tags: ["JavaScript", "API", "CSS"],
-            link: "https://github.com/yourusername/weather-app"
+            link: "https://sundar-cse.github.io/weather-vibed/"
         },
         {
             title: "Portfolio Website",
