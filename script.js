@@ -103,6 +103,7 @@ document.getElementById("githubLink").href = portfolioData.github;
 document.getElementById("linkedinLink").href = portfolioData.linkedin;
 document.getElementById("emailLink").href = `mailto:${portfolioData.email}`;
 document.getElementById("contactEmail").href = `mailto:${portfolioData.email}`;
+document.getElementById("instagram").href = `mailto:${portfolioData.instagram}`;
 
 /* SKILLS */
 const skillsContainer = document.getElementById("skillsContainer");
