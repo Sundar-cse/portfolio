@@ -12,7 +12,7 @@ const portfolioData = {
     github: "https://github.com/sundar-cse",
     linkedin: "https://www.linkedin.com/in/sundar-m-6908b0302/",
     email: "sundarkvp2@gmail.com",
-   instagram: "@sundar_cse21",
+    instagram: "https://www.instagram.com/sundar_cse21/",
 
     skills: [
         { name: "HTML", icon: "fa-brands fa-html5" },
@@ -103,7 +103,7 @@ document.getElementById("githubLink").href = portfolioData.github;
 document.getElementById("linkedinLink").href = portfolioData.linkedin;
 document.getElementById("emailLink").href = `mailto:${portfolioData.email}`;
 document.getElementById("contactEmail").href = `mailto:${portfolioData.email}`;
-document.getElementById("instagram").href = portfolioData.instagram;
+document.getElementById("InstagramLink").href = portfolioData.instagram;
 
 /* SKILLS */
 const skillsContainer = document.getElementById("skillsContainer");
