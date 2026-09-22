@@ -2,6 +2,8 @@
    BASIC RESET
 ========================= */
 
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap");
+
 * {
     margin: 0;
     padding: 0;
@@ -15,9 +17,22 @@ html {
 body {
     font-family: "Inter", sans-serif;
     color: #fff;
-    background: #080b18;
+    background: #07080f;
     overflow-x: hidden;
     line-height: 1.6;
+}
+
+/* Headings use a distinct display face so the site doesn't read as a
+   default Inter-everywhere template. */
+.logo,
+.hero h1,
+.hero-card h3,
+.section-title h2,
+.about-card h3,
+.project-card h3,
+.cert-info h3,
+.education-card h3 {
+    font-family: "Space Grotesk", "Inter", sans-serif;
 }
 
 a {
@@ -27,68 +42,45 @@ a {
 
 
 /* =========================
-   ANIMATED BACKGROUND
+   MINIMALIST BACKGROUND
 ========================= */
 
+/* Faint grid, fading out toward the edges — quiet texture instead of
+   floating gradient blobs. */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -3;
 
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(124, 58, 237, 0.18),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(6, 182, 212, 0.15),
-            transparent 30%
-        ),
-        #080b18;
+    background-color: #07080f;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+
+    -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 40%, transparent 100%);
 }
 
-.blob {
+/* One quiet accent glow behind the hero only — replaces the three
+   roaming blobs with a single, still light source. */
+body::after {
+    content: "";
     position: fixed;
-    width: 350px;
-    height: 350px;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.35;
+    top: -10%;
+    left: 50%;
+    width: 900px;
+    height: 500px;
+    transform: translateX(-50%);
     z-index: -2;
-    animation: float 10s ease-in-out infinite alternate;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.12), transparent 65%);
 }
 
-.blob-1 {
-    background: #7c3aed;
-    top: 10%;
-    left: -100px;
-}
-
-.blob-2 {
-    background: #06b6d4;
-    right: -100px;
-    top: 40%;
-    animation-delay: 2s;
-}
-
-.blob-3 {
-    background: #ec4899;
-    bottom: -150px;
-    left: 40%;
-    animation-delay: 4s;
-}
-
-@keyframes float {
-    from {
-        transform: translateY(0) translateX(0);
-    }
-
-    to {
-        transform: translateY(-50px) translateX(40px);
-    }
+/* Old blob elements stay in the DOM (harmless) but are no longer shown. */
+.blob {
+    display: none;
 }
 
 
@@ -97,6 +89,7 @@ body::before {
 ========================= */
 
 .glass {
+    position: relative;
     background: rgba(255, 255, 255, 0.07);
 
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -107,6 +100,49 @@ body::before {
 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+
+    overflow: hidden;
+}
+
+/* Cursor-tracking spotlight — driven by --x/--y set in script.js */
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    background: radial-gradient(
+        260px circle at var(--x, 50%) var(--y, 50%),
+        rgba(167, 139, 250, 0.16),
+        transparent 65%
+    );
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.glass:hover::before {
+    opacity: 1;
+}
+
+.glass > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 
@@ -153,12 +189,35 @@ body::before {
 }
 
 .nav-links a {
+    position: relative;
     color: #b9bfd3;
     font-size: 0.9rem;
     transition: 0.3s;
+    padding-bottom: 4px;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #a78bfa, #22d3ee);
+    transition: width 0.3s ease;
 }
 
 .nav-links a:hover {
+    color: #fff;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.nav-links a.active {
     color: #fff;
 }
 
@@ -193,6 +252,7 @@ body::before {
     gap: 60px;
 
     padding-top: 100px;
+    scroll-margin-top: 110px;
 }
 
 .status {
@@ -224,6 +284,12 @@ body::before {
     border-radius: 50%;
 
     box-shadow: 0 0 10px #22c55e;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 10px #22c55e; }
+    50% { box-shadow: 0 0 18px #22c55e, 0 0 4px #22c55e; }
 }
 
 .hello {
@@ -281,6 +347,7 @@ body::before {
 }
 
 .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 9px;
@@ -292,6 +359,7 @@ body::before {
     font-weight: 600;
 
     transition: 0.3s;
+    overflow: hidden;
 }
 
 .btn:hover {
@@ -308,6 +376,27 @@ body::before {
     );
 
     box-shadow: 0 10px 30px rgba(124, 58, 237, 0.25);
+}
+
+.primary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.35),
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+}
+
+.primary:hover::after {
+    left: 130%;
 }
 
 .secondary {
@@ -422,6 +511,12 @@ body::before {
     background: rgba(255,255,255,0.04);
 
     border-radius: 12px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.mini-stats div:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.08);
 }
 
 .mini-stats strong {
@@ -451,6 +546,7 @@ body::before {
     margin: auto;
 
     padding: 100px 0;
+    scroll-margin-top: 110px;
 }
 
 .section-title {
@@ -641,6 +737,11 @@ body::before {
     bottom: 25px;
 
     color: #a78bfa;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-link {
+    transform: translate(3px, -3px);
 }
 
 
@@ -765,6 +866,7 @@ body::before {
 
 .contact-section {
     padding-bottom: 70px;
+    scroll-margin-top: 110px;
 }
 
 .contact-card {
@@ -892,3 +994,24 @@ footer {
         padding: 30px 20px;
     }
 }
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .blob {
+        animation: none;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .status-dot {
+        animation: none;
+    }
+   }
