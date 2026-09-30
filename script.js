@@ -348,3 +348,51 @@ document.querySelectorAll(".nav-links a").forEach(link => {
 
 /* LOAD CERTIFICATES FROM GITHUB */
 loadCertificates();
+const roles = [
+    "Web Developer",
+    "Frontend Developer",
+    "JavaScript Developer",
+    "Problem Solver"
+];
+
+const typingText = document.getElementById("typingText");
+
+let roleIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeRole() {
+
+    if (!typingText) return;
+
+    const currentRole = roles[roleIndex];
+
+    if (deleting) {
+        charIndex--;
+    } else {
+        charIndex++;
+    }
+
+    typingText.textContent =
+        currentRole.substring(0, charIndex);
+
+    let speed = deleting ? 55 : 90;
+
+    // Pause after completing a word
+    if (!deleting && charIndex === currentRole.length) {
+        speed = 1600;
+        deleting = true;
+    }
+
+    // Move to next word
+    if (deleting && charIndex === 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        speed = 400;
+    }
+
+    setTimeout(typeRole, speed);
+}
+
+typeRole();
+
