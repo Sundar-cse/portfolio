@@ -1010,6 +1010,33 @@ footer {
         transform: none;
         transition: none;
     }
+/* for changing the hero typing animation */
+   #heroRole {
+    min-height: 1.4em;
+}
+
+#typingText {
+    color: #a78bfa;
+}
+
+.typing-cursor {
+    color: #a78bfa;
+    font-weight: 400;
+    animation: typingCursorBlink 0.8s infinite;
+}
+
+@keyframes typingCursorBlink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
 
     .status-dot {
         animation: none;
