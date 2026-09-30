@@ -1010,8 +1010,9 @@ footer {
         transform: none;
         transition: none;
     }
-/* for changing the hero typing animation */
-   #heroRole {
+
+/* Hero typing animation */
+#heroRole {
     min-height: 1.4em;
 }
 
@@ -1026,19 +1027,29 @@ footer {
 }
 
 @keyframes typingCursorBlink {
-    0%,
-    50% {
+    0%, 50% {
         opacity: 1;
     }
-
-    51%,
-    100% {
+    51%, 100% {
         opacity: 0;
     }
 }
 
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 
-    .status-dot {
+    .blob,
+    .status-dot,
+    .typing-cursor {
         animation: none;
     }
-   }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
