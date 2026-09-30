@@ -93,7 +93,6 @@ document.getElementById("navName").textContent = portfolioData.name;
 document.getElementById("heroName").textContent = portfolioData.name;
 document.getElementById("cardName").textContent = portfolioData.name;
 document.getElementById("footerName").textContent = portfolioData.name;
-document.getElementById("heroRole").textContent = portfolioData.role;
 document.getElementById("cardCourse").textContent = portfolioData.course;
 document.getElementById("heroBio").textContent = portfolioData.bio;
 document.getElementById("aboutText").textContent = portfolioData.about;
